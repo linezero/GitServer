@@ -19,6 +19,6 @@ GitPath 可以是 git 的绝对路径
 
 ## 原理
 
-git client => git server => git server
+git client => GitServer => git server
 
 ![](git-server-rpc-model.png)

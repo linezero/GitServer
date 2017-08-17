@@ -1,0 +1,38 @@
+@using GitServer.Extensions
+@using GitServer.Models
+@using LibGit2Sharp
+@model TreeModel
+
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string currRepo = (string)ViewContext.RouteData.Values["repoName"];
+    string currId = (string)ViewContext.RouteData.Values["id"];
+    var request = ViewContext.HttpContext.Request;
+    var giturl = $"{request.Scheme}://{request.Host}/git/{currRepo}.git";
+}
+
+<h2>Contents of @Model.Name</h2>
+<input type="text" value="@giturl" readonly style="width:400px;"/>
+<table>
+	<tr><td>&nbsp;</td><th>Name</th></tr>
+	
+	@if (Model.Parent != null)
+	{
+		<tr>
+			<td><img src="/img/directory.svg" class="browse-icon" /></td>
+			<td><a href="@Url.UnencodedRouteLink("GetTreeView", new { repoName = currRepo, id = currId, path = Model.Parent })">..</a></td>
+		</tr>
+	}
+
+	@foreach(FileViewModel fvm in Model.Children)
+	{
+		bool isTree = fvm.Type == ObjectType.Tree;
+
+		<tr>
+			<td><img src="/img/@((isTree) ? "directory" : "file").svg" class="browse-icon" /></td>
+			<td><a href="@Url.UnencodedRouteLink((isTree) ? "GetTreeView" : "GetBlobView", new { repoName = currRepo, id = currId, path = fvm.Path })">@fvm.Name</a></td>
+		</tr>
+	}
+</table>

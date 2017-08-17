@@ -1,0 +1,10 @@
+@using GitServer.Models
+@model ErrorModel
+
+@{
+	ViewBag.Title = $"{Model.StatusCode} - {Model.Message}";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Error @Model.StatusCode -  @Model.Message</h2>
+<p>@Model.Description</p>

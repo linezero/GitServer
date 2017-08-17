@@ -1,0 +1,18 @@
+@using GitServer.Extensions
+@using GitServer.Models
+@using GitServer.SyntaxHighlighing
+@model BlobModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = Model.Name;
+}
+
+@if(Model.IsBinary)
+{
+	<p>This file is binary and cannot be displayed.</p>
+}
+else
+{
+	@Html.HighlightCode(Model.Content, Highlighter.FromExtension(System.IO.Path.GetExtension(Model.Name)), "code")
+}

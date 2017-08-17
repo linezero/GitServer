@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title - GitServer</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/css/main.min.css")" />
+	<link rel="shortcut icon" href="/img/favicon.ico" />
+</head>
+<body>
+	<nav class="navbar">
+		<span class="logo">
+			<a style="text-decoration:none;" href="@Url.RouteUrl("Home")">
+				<img src="/img/logo_white.svg" alt="Logo" class="logo-image" />                
+			</a>
+		</span>
+		<ul class="navbar-list">
+            <li style="font-size:24px;">GitServer</li>
+		</ul>
+	</nav>
+	<div class="content">
+		@RenderBody()
+	</div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+@using GitServer.Extensions
+@using GitServer.Models
+@using GitServer.SyntaxHighlighing
+@model FileTreeEntry
+
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = Model.Name;
+}
+
+@if (Model.IsFile)
+{
+	if (!Model.IsBinary)
+	{
+		@Html.HighlightCode(Model.ContentString, Highlighter.FromExtension(Model.Extension), "code")
+	}
+	else
+	{
+		<p>The file is a binary file and cannot be displayed.</p>
+	}
+}
+else if (Model.IsDirectory)
+{
+	<ul class="file-browser">
+		@foreach (FileTreeEntry entry in Model)
+		{
+			<li class="@(entry.IsFile ? "file" : "dir")">
+				<a href="@Url.UnencodedRouteLink("GetFileView", new { repoName = entry.RepoName, filePath = entry.Path })">@entry.Name</a>
+			</li>
+		}
+	</ul>
+}

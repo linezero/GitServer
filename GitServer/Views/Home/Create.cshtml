@@ -1,0 +1,24 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "新建仓库";
+}
+
+<h2>新建仓库</h2>
+<div style="width:250px;">
+    <form asp-route="Create" method="post">
+        <table>
+            <tr>
+                <td><label>仓库名称</label></td>
+                <td><input type="text" name="name" /></td>
+            </tr>
+            <tr>
+                <td><label>远程地址</label></td>
+                <td><input type="text" name="remoteurl" /></td>
+            </tr>
+        </table>
+        <br />
+        <input type="submit" value="创建" style="float:right;" />
+    </form>
+</div>
+

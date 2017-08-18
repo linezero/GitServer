@@ -18,9 +18,20 @@ GitPath 可以是 git 的绝对路径
 
 ## 功能
 
+### 已完成
+
 - 创建仓库
 - 浏览仓库
 - git客户端push pull
+
+### 待完成
+
+- 数据库支持 SQLite、MSSQL、MySQL、PostgreSQL
+- 支持用户管理仓库
+- 仓库工单（Issue）
+- 合并请求（Pull Request）
+- 代码评审（Code Review）
+- 在线编辑
 
 ## 开发
 

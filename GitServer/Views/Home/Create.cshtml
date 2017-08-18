@@ -4,21 +4,18 @@
     ViewData["Title"] = "新建仓库";
 }
 
-<h2>新建仓库</h2>
-<div style="width:250px;">
-    <form asp-route="Create" method="post">
-        <table>
-            <tr>
-                <td><label>仓库名称</label></td>
-                <td><input type="text" name="name" /></td>
-            </tr>
-            <tr>
-                <td><label>远程地址</label></td>
-                <td><input type="text" name="remoteurl" /></td>
-            </tr>
-        </table>
-        <br />
-        <input type="submit" value="创建" style="float:right;" />
+<h2 class="ui header">新建仓库</h2>
+<div>
+    <form asp-route="Create" method="post" class="ui form">
+        <div class="field">
+            <label>仓库名称</label>
+            <input type="text" name="name" placeholder="仓库名称必填" required autofocus>
+        </div>
+        <div class="field">
+            <label>远程地址</label>
+            <input type="text" name="remoteurl" placeholder="要Clone的远程仓库地址非必填">
+        </div>
+        <button class="ui button" type="submit">创建</button>
     </form>
 </div>
 

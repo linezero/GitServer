@@ -3,23 +3,39 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title - GitServer</title>
-	<meta charset="utf-8" />
-	<link rel="stylesheet" type="text/css" href="@Url.Content("~/css/main.min.css")" />
+	<meta charset="utf-8" />	
+    <link href="~/semantic/semantic.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/css/main.css" />
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/semantic/semantic.min.js"></script>
 	<link rel="shortcut icon" href="/img/favicon.ico" />
 </head>
 <body>
-	<nav class="navbar">
-		<span class="logo">
-			<a style="text-decoration:none;" href="@Url.RouteUrl("Home")">
-				<img src="/img/logo_white.svg" alt="Logo" class="logo-image" />                
-			</a>
-		</span>
-		<ul class="navbar-list">
-            <li style="font-size:24px;">GitServer</li>
-		</ul>
-	</nav>
-	<div class="content">
-		@RenderBody()
-	</div>
+    <div class="full height">
+        <noscript>Please enable JavaScript in your browser!</noscript>
+        <div class="following bar light">
+            <div class="ui container">
+                <div class="ui grid">
+                    <div class="column">
+                        <div class="ui top secondary menu">
+                            <a class="item brand" href="/">
+                                <img src="/img/logo_white.svg" alt="GitServer" class="logo-image" />
+                            </a>
+                            <a class="item" href="/">首页</a>
+                            <a class="item" href="#">探索</a>
+                            <div class="right menu">
+                                <a class="item" href="#">
+                                    <i class="octicon octicon-sign-in"></i> 登录
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui container">
+            @RenderBody()
+        </div>
+    </div>
 </body>
 </html>

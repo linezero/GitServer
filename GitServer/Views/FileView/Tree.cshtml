@@ -1,8 +1,7 @@
-@using GitServer.Extensions
+﻿@using GitServer.Extensions
 @using GitServer.Models
 @using LibGit2Sharp
 @model TreeModel
-
 @{
     ViewBag.Title = Model.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -12,27 +11,75 @@
     var request = ViewContext.HttpContext.Request;
     var giturl = $"{request.Scheme}://{request.Host}/git/{currRepo}.git";
 }
-
+<div class="ui clearing segment">
+    <h3 class="ui left floated header">@currRepo</h3>
+</div>
 <h2>Contents of @Model.Name</h2>
-<input type="text" value="@giturl" readonly style="width:400px;"/>
-<table>
-	<tr><td>&nbsp;</td><th>Name</th></tr>
-	
-	@if (Model.Parent != null)
-	{
-		<tr>
-			<td><img src="/img/directory.svg" class="browse-icon" /></td>
-			<td><a href="@Url.UnencodedRouteLink("GetTreeView", new { repoName = currRepo, id = currId, path = Model.Parent })">..</a></td>
-		</tr>
-	}
+<div class="ui fluid action input">
+    <input type="text" value="@giturl" readonly>
+    <button class="ui teal right labeled icon button"><i class="copy icon"></i> Copy </button>
+</div>
+<div class="ui segment" id="git-stats">
+    <div class="ui two horizontal center link list">
+        <div class="item">
+            <a href="#"><span class="ui text black"><i class="icon history"></i> <b>1</b> 提交历史</span> </a>
+        </div>
+        <div class="item">
+            <a href="#"><span class="ui text black"><i class="icon git"></i><b>1</b> 代码分支</span> </a>
+        </div>
+        <div class="item">
+            <a href="#"><span class="ui text black"><i class="icon tag"></i> <b>0</b> 版本发布</span> </a>
+        </div>
+    </div>
+</div>
+<div class="ui top attached tabular menu">
+    <a class="item active" data-tab="code">代码</a>
+    <a class="item" data-tab="issues">Issues</a>
+    <a class="item" data-tab="pull">Pull requests</a>
+</div>
+<table class="ui celled striped table">
+    <thead>
+        <tr>
+            <th colspan="3">Git Repository </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Parent != null)
+        {
+            <tr>
+                <td class="collapsing"><i class="folder icon"></i><a href="@Url.UnencodedRouteLink("GetTreeView", new { repoName = currRepo, id = currId, path = Model.Parent })">..</a></td>
+                <td>Initial commit</td>
+                <td class="right aligned collapsing">10 hours ago</td>
+            </tr>}
+        @foreach (FileViewModel fvm in Model.Children)
+        {
+            bool isTree = fvm.Type == ObjectType.Tree;
 
-	@foreach(FileViewModel fvm in Model.Children)
-	{
-		bool isTree = fvm.Type == ObjectType.Tree;
-
-		<tr>
-			<td><img src="/img/@((isTree) ? "directory" : "file").svg" class="browse-icon" /></td>
-			<td><a href="@Url.UnencodedRouteLink((isTree) ? "GetTreeView" : "GetBlobView", new { repoName = currRepo, id = currId, path = fvm.Path })">@fvm.Name</a></td>
-		</tr>
-	}
+            <tr>
+                <td class="collapsing"><i class="@((isTree) ? "folder" : "file outline") icon"></i><a href="@Url.UnencodedRouteLink((isTree) ? "GetTreeView" : "GetBlobView", new { repoName = currRepo, id = currId, path = fvm.Path })">@fvm.Name</a></td>
+                <td>Initial commit</td>
+                <td class="right aligned collapsing">10 hours ago</td>
+            </tr>}
+    </tbody>
 </table>
+@*<table>
+        <tr><td>&nbsp;</td><th>Name</th></tr>
+
+        @if (Model.Parent != null)
+        {
+            <tr>
+                <td><img src="/img/directory.svg" class="browse-icon" /></td>
+                <td><a href="@Url.UnencodedRouteLink("GetTreeView", new { repoName = currRepo, id = currId, path = Model.Parent })">..</a></td>
+            </tr>
+        }
+
+        @foreach(FileViewModel fvm in Model.Children)
+        {
+            bool isTree = fvm.Type == ObjectType.Tree;
+
+            <tr>
+                <td><img src="/img/@((isTree) ? "directory" : "file").svg" class="browse-icon" /></td>
+                <td><a href="@Url.UnencodedRouteLink((isTree) ? "GetTreeView" : "GetBlobView", new { repoName = currRepo, id = currId, path = fvm.Path })">@fvm.Name</a></td>
+            </tr>
+        }
+    </table>*@

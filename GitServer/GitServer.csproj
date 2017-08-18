@@ -23,13 +23,5 @@
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="wwwroot\img\directory.svg" />
-    <None Include="wwwroot\img\favicon.ico" />
-    <None Include="wwwroot\img\file.svg" />
-    <None Include="wwwroot\img\folder-16.png" />
-    <None Include="wwwroot\img\logo_white.svg" />
-    <None Include="wwwroot\img\text-file-16.png" />
-  </ItemGroup>
-
+  
 </Project>

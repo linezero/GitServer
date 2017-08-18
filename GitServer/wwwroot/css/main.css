@@ -6,14 +6,6 @@
   color: #525252;
   overflow-x: hidden; }
 
-.content {
-  position: absolute;
-  top: 35px;
-  width: 100%;
-  min-height: 700px;
-  padding: 5px;
-  overflow-x: auto; }
-
 .navbar {
     background-color: #00bcd4;
     overflow: hidden;
@@ -94,4 +86,18 @@ li.dir {
   background: url("/img/folder-16.png") no-repeat left top;
   height: 20px;
   padding-left: 20px; }
-
+.following.bar.light {
+    background-color: #00B5AD;
+    border-bottom: 1px solid #DDDDDD;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.04);
+}
+.following.bar .top.menu a.item {
+    color: white;
+}
+#git-stats .list {
+    width:100%;
+}
+#git-stats .list .item {
+    margin-left: 0;
+    width: 33.33%;
+}

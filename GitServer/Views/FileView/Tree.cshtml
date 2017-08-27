@@ -4,7 +4,6 @@
 @model TreeModel
 @{
     ViewBag.Title = Model.Name;
-    Layout = "~/Views/Shared/_Layout.cshtml";
 
     string currRepo = (string)ViewContext.RouteData.Values["repoName"];
     string currId = (string)ViewContext.RouteData.Values["id"];

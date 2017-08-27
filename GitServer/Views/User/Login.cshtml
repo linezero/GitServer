@@ -1,0 +1,41 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewBag.Title = "登录";
+}
+
+<div class="user signin">
+    <div class="ui middle very relaxed page grid">
+        <div class="column">
+            <form class="ui form" asp-action="Login" method="post">
+                <h3 class="ui top attached header">
+                    登录
+                </h3>
+                <div class="ui attached segment">
+                    <div class="required inline field ">
+                        <label for="user_name">用户名</label>
+                        <input id="user_name" name="Username" value="" autofocus required>
+                    </div>
+                    <div class="required inline field ">
+                        <label for="password">密码</label>
+                        <input id="password" name="Password" type="password" value="" required>
+                    </div>
+                    <div class="inline field">
+                        <label></label>
+                        <div class="ui checkbox">
+                            <label>记住登录</label>
+                            <input name="remember" type="checkbox">
+                        </div>
+                    </div>
+
+                    <div class="inline field">
+                        <label></label>
+                        <button class="ui teal button">登录</button>
+                        <a href="/User/Register">注册</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

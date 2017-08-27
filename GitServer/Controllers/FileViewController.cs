@@ -6,9 +6,11 @@ using GitServer.Settings;
 using LibGit2Sharp;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GitServer.Controllers
 {
+    [Authorize]
     public class FileViewController : GitControllerBase
 	{
 		public FileViewController(

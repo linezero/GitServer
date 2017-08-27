@@ -24,9 +24,16 @@
                             <a class="item" href="/">首页</a>
                             <a class="item" href="#">探索</a>
                             <div class="right menu">
-                                <a class="item" href="#">
+                                @if (ViewContext.HttpContext.User.Identity.IsAuthenticated)
+                                {
+                                    <a class="item" href="#"><i class="octicon octicon-sign-in"></i> @ViewContext.HttpContext.User.Identity.Name</a>
+                                }
+                                else
+                                {
+                                <a class="item" href="/User/Login">
                                     <i class="octicon octicon-sign-in"></i> 登录
                                 </a>
+                                }
                             </div>
                         </div>
                     </div>

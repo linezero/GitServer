@@ -1,10 +1,13 @@
+using GitServer.Handlers;
 using GitServer.Services;
 using GitServer.Settings;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
 namespace GitServer.Controllers
 {
+    [Authorize(AuthenticationSchemes = BasicAuthenticationDefaults.AuthenticationScheme)]
     public class GitController : GitControllerBase
     {
 		public GitController(
@@ -13,10 +16,10 @@ namespace GitServer.Controllers
 		)
 			: base(gitOptions, repoService)
 		{ }
-
+        
         [Route("git/{repoName}.git/git-upload-pack")]
-		public IActionResult ExecuteUploadPack(string repoName) => TryGetResult(repoName, () => GitUploadPack(repoName));
-
+        public IActionResult ExecuteUploadPack(string repoName) => TryGetResult(repoName, () => GitUploadPack(repoName));
+        
         [Route("git/{repoName}.git/git-receive-pack")]
         public IActionResult ExecuteReceivePack(string repoName) => TryGetResult(repoName, () => GitReceivePack(repoName));
 

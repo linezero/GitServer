@@ -3,9 +3,11 @@ using GitServer.Services;
 using GitServer.Settings;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GitServer.Controllers
 {
+    [Authorize]
     public class HomeController : GitControllerBase
     {
         public HomeController(

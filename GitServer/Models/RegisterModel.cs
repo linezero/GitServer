@@ -10,7 +10,6 @@ namespace GitServer.Models
 		public string Username { get; set; }
 
 		[Required]
-		[Display(Name = "E-Mail")]
 		[DataType(DataType.EmailAddress)]
 		public string Email { get; set; }
 

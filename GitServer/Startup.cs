@@ -5,6 +5,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using GitServer.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+using GitServer.Handlers;
 
 namespace GitServer
 {
@@ -25,12 +33,23 @@ namespace GitServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<GitServerContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             // Add framework services.
             services.AddMvc();
 			services.AddOptions();
 
-			// Add settings
-			services.Configure<GitSettings>(Configuration.GetSection(nameof(GitSettings)));
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie(options=> {
+                options.AccessDeniedPath = "/User/Login";
+                options.LoginPath = "/User/Login";
+            }).AddBasic();
+
+            //services.AddSingleton<IAuthorizationHandler, GitServerHandler>();
+            // Add settings
+            services.Configure<GitSettings>(Configuration.GetSection(nameof(GitSettings)));
 			// Add git services
 			services.AddTransient<GitRepositoryService>();
 			services.AddTransient<GitFileService>();
@@ -41,7 +60,7 @@ namespace GitServer
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+            InitializeGitServerDatabase(app.ApplicationServices);
 			if(env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
@@ -50,8 +69,22 @@ namespace GitServer
 			{
 				app.UseExceptionHandler("/error");
 			}
+            app.UseAuthentication();
             app.UseStaticFiles();
             app.UseMvc(routes => RouteConfig.RegisterRoutes(routes));
 		}
-	}
+        private void InitializeGitServerDatabase(IServiceProvider serviceProvider)
+        {
+            using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var db = serviceScope.ServiceProvider.GetService<GitServerContext>();
+                db.Database.EnsureCreated();
+                if (db.Users.Count() == 0)
+                {
+                    //db.Users.AddRange(GetTopicNodes());
+                    db.SaveChanges();
+                }
+            }
+        }
+    }
 }

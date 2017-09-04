@@ -1,17 +1,17 @@
-﻿using System;
+﻿using GitServer.ApplicationCore.Interfaces;
+using GitServer.ApplicationCore.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.Options;
-using System.Security.Claims;
-using Microsoft.Extensions.DependencyInjection;
-using GitServer.ApplicationCore.Models;
-using Microsoft.Extensions.Logging;
 
 namespace GitServer.Handlers
 {
@@ -63,9 +63,9 @@ namespace GitServer.Handlers
 
     public class BasicAuthenticationOptions : AuthenticationSchemeOptions, IOptions<BasicAuthenticationOptions>
     {
-        private string _realm="GitServer";
+        private string _realm;
 
-        public IServiceProvider ServiceProvider { get; set; }
+        public IServiceCollection ServiceCollection { get; set; }
         public BasicAuthenticationOptions Value => this;
         public string Realm
         {
@@ -78,22 +78,17 @@ namespace GitServer.Handlers
 
         public async Task<ClaimsPrincipal> SignInAsync(string userName, string password)
         {
-            User user = new User() {
-                Name=userName,
-                Password=password
-            };//await UserManager.FindByNameAsync(userName);
-                             //No user with the specified name found
-            if (user == null)
-                return null;
-
-            //Wrong password supplied
-            //if (!(await UserManager.CheckPasswordAsync(user, password)))
-            //    return null;
-            var identity = new ClaimsIdentity(BasicAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Name));
-            identity.AddClaim(new Claim(ClaimTypes.Name, user.Name));
-            var principal = new ClaimsPrincipal(identity);
-            return principal;
+            using (var serviceScope = ServiceCollection.BuildServiceProvider().CreateScope())
+            {
+                var _user = serviceScope.ServiceProvider.GetService<IRepository<User>>();
+                var user = _user.List(r => r.Name == userName && r.Password == password).FirstOrDefault();
+                if (user == null)
+                    return null;
+                var identity = new ClaimsIdentity(BasicAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
+                identity.AddClaim(new Claim(ClaimTypes.Name, user.Name));
+                var principal = new ClaimsPrincipal(identity);
+                return principal;
+            }
         }
     }
 
@@ -104,7 +99,7 @@ namespace GitServer.Handlers
     public static class BasicAuthenticationExtensions
     {
         public static AuthenticationBuilder AddBasic(this AuthenticationBuilder builder)
-            => builder.AddBasic(BasicAuthenticationDefaults.AuthenticationScheme, _ => { });
+            => builder.AddBasic(BasicAuthenticationDefaults.AuthenticationScheme, _ => { _.ServiceCollection = builder.Services;_.Realm = "GitServer"; });
 
         public static AuthenticationBuilder AddBasic(this AuthenticationBuilder builder, Action<BasicAuthenticationOptions> configureOptions)
             => builder.AddBasic(BasicAuthenticationDefaults.AuthenticationScheme, configureOptions);
@@ -114,7 +109,7 @@ namespace GitServer.Handlers
 
         public static AuthenticationBuilder AddBasic(this AuthenticationBuilder builder, string authenticationScheme, string displayName, Action<BasicAuthenticationOptions> configureOptions)
         {
-            //builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<BasicAuthenticationOptions>, BasicAuthenticationOptions>());
+            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IOptions<BasicAuthenticationOptions>, BasicAuthenticationOptions>());
             return builder.AddScheme<BasicAuthenticationOptions, BasicAuthenticationHandler>(authenticationScheme, displayName, configureOptions);
         }
     }

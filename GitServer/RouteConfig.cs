@@ -16,35 +16,35 @@ namespace GitServer
 			#region Routes for viewing the file tree
 			routeBuilder.MapRoute(
 				"RedirectGitLink",
-				"git/{repoName}.git",
+				"{userName}/{repoName}.git",
 				new { controller = "FileView", action = "RedirectGitLink" },
 				new { method = new HttpMethodRouteConstraint("GET") }
 			);
 
 			routeBuilder.MapRoute(
 				"GetRepositoryHomeView",
-				"git/{repoName}",
+                "{userName}/{repoName}",
 				new { controller = "FileView", action = "GetTreeView", id = "master", path = string.Empty },
 				new { method = new HttpMethodRouteConstraint("GET") }
 			);
 
 			routeBuilder.MapRoute(
 				"GetTreeView",
-				"git/{repoName}/tree/{id}/{*path}",
+                "{userName}/{repoName}/tree/{id}/{*path}",
 				new { controller = "FileView", action = "GetTreeView" },
 				new { method = new HttpMethodRouteConstraint("GET") }
 			);
 
 			routeBuilder.MapRoute(
 				"GetBlobView",
-				"git/{repoName}/blob/{id}/{*path}",
+                "{userName}/{repoName}/blob/{id}/{*path}",
 				new { controller = "FileView", action = "GetBlobView" },
 				new { method = new HttpMethodRouteConstraint("GET") }
 			);
 
 			routeBuilder.MapRoute(
 				"GetRawBlob",
-				"git/{repoName}/raw/{id}/{*path}",
+                "{userName}/{repoName}/raw/{id}/{*path}",
 				new { controller = "FileView", action = "GetRawBlob" },
 				new { method = new HttpMethodRouteConstraint("GET") }
 			);

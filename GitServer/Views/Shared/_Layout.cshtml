@@ -3,12 +3,12 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title - GitServer</title>
-	<meta charset="utf-8" />	
+    <meta charset="utf-8" />
     <link href="~/semantic/semantic.min.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="~/css/main.css" />
     <script src="~/js/jquery.min.js"></script>
     <script src="~/semantic/semantic.min.js"></script>
-	<link rel="shortcut icon" href="/img/favicon.ico" />
+    <link rel="shortcut icon" href="/img/favicon.ico" />
 </head>
 <body>
     <div class="full height">
@@ -26,13 +26,12 @@
                             <div class="right menu">
                                 @if (ViewContext.HttpContext.User.Identity.IsAuthenticated)
                                 {
-                                    <a class="item" href="#"><i class="octicon octicon-sign-in"></i> @ViewContext.HttpContext.User.Identity.Name</a>
+                                    <a class="item" href="#">@ViewContext.HttpContext.User.Identity.Name</a>
+                                    <a class="item" href="/User/Signout">注销</a>
                                 }
                                 else
                                 {
-                                <a class="item" href="/User/Login">
-                                    <i class="octicon octicon-sign-in"></i> 登录
-                                </a>
+                                    <a class="item" href="/User/Login">登录</a>
                                 }
                             </div>
                         </div>

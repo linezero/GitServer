@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GitServer.ApplicationCore.Models
 {
-    public partial class TeamRepositoryRole
+    public class TeamRepositoryRole
     {
         public long TeamID { get; set; }
         public long RepositoryID { get; set; }

@@ -3,22 +3,21 @@ using System.Collections.Generic;
 
 namespace GitServer.ApplicationCore.Models
 {
-    public partial class Repository
+    public class Repository:BaseEntity
     {
-        public Repository()
-        {
-            this.TeamRepositoryRoles = new List<TeamRepositoryRole>();
-        }
-
-        public long ID { get; set; }
         public long UserID { get; set; }
+        public string UserName { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string DefaultBranch { get; set; }
+        public int NumIssues { get; set; }
+        public int NumOpenIssues { get; set; }
+        public int NumPulls { get; set; }
+        public int NumOpenPulls { get; set; }
         public DateTime CreationDate { get; set; }
         public bool IsPrivate { get; set; }
-        public bool AllowAnonymousRead { get; set; }
-        public bool AllowAnonymousWrite { get; set; }
+        public bool IsMirror { get; set; }
+        public long Size { get; set; }
         public DateTime UpdateTime { get; set; }
-        public virtual ICollection<TeamRepositoryRole> TeamRepositoryRoles { get; set; }
     }
 }

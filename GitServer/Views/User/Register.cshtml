@@ -1,6 +1,7 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@model GitServer.Models.RegisterModel
 @{
     ViewBag.Title = "注册";
 }
@@ -22,11 +23,13 @@
                     </div>
                     <div class="required inline field ">
                         <label for="password">密码</label>
-                        <input id="password" name="Password" type="password" value="" required>
+                        <input id="password" name="Password" type="password" value="" placeholder="最少8位" required>
+                        <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                     <div class="required inline field ">
                         <label for="ConfirmPassword">确认密码</label>
-                        <input id="ConfirmPassword" name="ConfirmPassword" type="password" value="" required>
+                        <input id="ConfirmPassword" name="ConfirmPassword" type="password" value="" placeholder="最少8位" required>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                     </div>
                     <div class="inline field">
                         <label></label>

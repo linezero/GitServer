@@ -42,7 +42,7 @@ namespace GitServer.Services
 		{
 			string path = Path.Combine(Settings.BasePath, name);
 			Repository repo = new Repository(Repository.Init(path, true));
-			_repos.Add(path);
+			//_repos.Add(path);
 			return repo;
 		}
 
@@ -61,7 +61,7 @@ namespace GitServer.Services
                         IEnumerable<string> refSpecs = remote.FetchRefSpecs.Select(x => x.Specification);
                         Commands.Fetch(repo, remote.Name, refSpecs, null, logMessage);
                     }
-                    _repos.Add(path);
+                    //_repos.Add(path);
                     return repo;
                 }                
             }
@@ -86,7 +86,7 @@ namespace GitServer.Services
 					string path = Path.Combine(Settings.BasePath, name);
 					Directory.Delete(path, true);
 
-					_repos.Remove(path);
+					//_repos.Remove(path);
 				}
 				catch(Exception ex) { e = ex; }
 			}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GitServer.ApplicationCore.Models
 {
-    public partial class Team
+    public class Team
     {
         public Team()
         {

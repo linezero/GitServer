@@ -8,11 +8,18 @@ using GitServer.Models;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using GitServer.ApplicationCore.Interfaces;
+using GitServer.ApplicationCore.Models;
 
 namespace GitServer.Controllers
 {    
     public class UserController : Controller
-    {        
+    {
+        private IRepository<User> _user;
+        public UserController(IRepository<User> user)
+        {
+            _user = user;
+        }
         public IActionResult Index()
         {
             return Content("ok");
@@ -24,12 +31,21 @@ namespace GitServer.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model)
         {
-            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, model.Username));
-            identity.AddClaim(new Claim(ClaimTypes.Name, model.Username));
-            var principal = new ClaimsPrincipal(identity);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,principal);
-            return Redirect("/");
+            if (ModelState.IsValid)
+            {
+                var user = _user.List(r => r.Name == model.Username && r.Password == model.Password).FirstOrDefault();
+                if (user != null)
+                {
+                    var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
+                    identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Name));
+                    identity.AddClaim(new Claim(ClaimTypes.Name, user.Name));
+                    identity.AddClaim(new Claim(ClaimTypes.Email, user.Email));
+                    var principal = new ClaimsPrincipal(identity);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                    return Redirect("/");
+                }
+            }
+            return View();
         }
         public IActionResult Register()
         {
@@ -38,7 +54,24 @@ namespace GitServer.Controllers
         [HttpPost]
         public IActionResult Register(RegisterModel model)
         {
+            if (ModelState.IsValid)
+            {
+                _user.Add(new User()
+                {
+                    Name = model.Username,
+                    Email = model.Email,
+                    Password = model.ConfirmPassword,
+                    CreationDate = DateTime.Now
+                });
+                return Redirect("/");
+            }
             return View();
         }
+        public async Task<IActionResult> Signout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return Redirect("/");
+        }
+
     }
 }

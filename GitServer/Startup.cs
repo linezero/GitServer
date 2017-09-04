@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using GitServer.Handlers;
+using GitServer.ApplicationCore.Interfaces;
+using NetCoreBBS.Infrastructure.Repositorys;
+using GitServer.ApplicationCore.Models;
 
 namespace GitServer
 {
@@ -47,12 +50,13 @@ namespace GitServer
                 options.LoginPath = "/User/Login";
             }).AddBasic();
 
-            //services.AddSingleton<IAuthorizationHandler, GitServerHandler>();
             // Add settings
             services.Configure<GitSettings>(Configuration.GetSection(nameof(GitSettings)));
 			// Add git services
 			services.AddTransient<GitRepositoryService>();
 			services.AddTransient<GitFileService>();
+            services.AddTransient<IRepository<User>, Repository<User>>();
+            services.AddTransient<IRepository<Repository>, Repository<Repository>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,8 +85,7 @@ namespace GitServer
                 db.Database.EnsureCreated();
                 if (db.Users.Count() == 0)
                 {
-                    //db.Users.AddRange(GetTopicNodes());
-                    db.SaveChanges();
+                    //db.SaveChanges();
                 }
             }
         }

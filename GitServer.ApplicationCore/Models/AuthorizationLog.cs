@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GitServer.ApplicationCore.Models
 {
-    public partial class AuthorizationLog
+    public class AuthorizationLog
     {
         public Guid ID { get; set; }
         public long UserID { get; set; }

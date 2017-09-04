@@ -6,12 +6,13 @@
     ViewBag.Title = Model.Name;
 
     string currRepo = (string)ViewContext.RouteData.Values["repoName"];
+    string currUser = (string)ViewContext.RouteData.Values["userName"];
     string currId = (string)ViewContext.RouteData.Values["id"];
     var request = ViewContext.HttpContext.Request;
-    var giturl = $"{request.Scheme}://{request.Host}/git/{currRepo}.git";
+    var giturl = $"{request.Scheme}://{request.Host}/{currUser}/{currRepo}.git";
 }
 <div class="ui clearing segment">
-    <h3 class="ui left floated header">@currRepo</h3>
+    <h3 class="ui left floated header">@currUser / @currRepo</h3>
 </div>
 <h2>Contents of @Model.Name</h2>
 <div class="ui fluid action input">

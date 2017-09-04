@@ -4,11 +4,22 @@
 }
 
 <h2 class="ui header">新建仓库</h2>
+@if (Model != null)
+{
+    <div class="ui negative message">
+        <i class="close icon"></i>
+        <div class="header">@Model</div>
+    </div>
+}
 <div>
     <form asp-route="Create" method="post" class="ui form">
         <div class="field">
             <label>仓库名称</label>
             <input type="text" name="name" placeholder="仓库名称必填" required autofocus>
+        </div>
+        <div class="field">
+            <label>仓库描述</label>
+            <input type="text" name="description" placeholder="仓库描述">
         </div>
         <div class="field">
             <label>远程地址</label>

@@ -36,7 +36,23 @@ namespace GitServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<GitServerContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            var connectionType = Configuration.GetConnectionString("ConnectionType");
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            switch (connectionType)
+            {
+                case "Sqlite":
+                    services.AddDbContext<GitServerContext>(options => options.UseSqlite(connectionString));
+                    break;
+                case "MSSQL":
+                    services.AddDbContext<GitServerContext>(options => options.UseSqlServer(connectionString));
+                    break;
+                case "MySQL":
+                    services.AddDbContext<GitServerContext>(options => options.UseMySQL(connectionString));
+                    break;
+                default:
+                    services.AddDbContext<GitServerContext>(options => options.UseSqlite(connectionString));
+                    break;
+            }
             // Add framework services.
             services.AddMvc();
 			services.AddOptions();

@@ -10,6 +10,8 @@
     string currId = (string)ViewContext.RouteData.Values["id"];
     var request = ViewContext.HttpContext.Request;
     var giturl = $"{request.Scheme}://{request.Host}/{currUser}/{currRepo}.git";
+    var repo = Model.Repository;
+    var lastcommit = repo.Commits.FirstOrDefault();
 }
 <div class="ui clearing segment">
     <h3 class="ui left floated header">@currUser / @currRepo</h3>
@@ -22,10 +24,10 @@
 <div class="ui segment" id="git-stats">
     <div class="ui two horizontal center link list">
         <div class="item">
-            <a href="#"><span class="ui text black"><i class="icon history"></i> <b>1</b> 提交历史</span> </a>
+            <a href="#"><span class="ui text black"><i class="icon history"></i> <b>@repo.Commits.Count()</b> 提交历史</span> </a>
         </div>
         <div class="item">
-            <a href="#"><span class="ui text black"><i class="icon git"></i><b>1</b> 代码分支</span> </a>
+            <a href="#"><span class="ui text black"><i class="icon git"></i><b>@repo.Branches.Count()</b> 代码分支</span> </a>
         </div>
         <div class="item">
             <a href="#"><span class="ui text black"><i class="icon tag"></i> <b>0</b> 版本发布</span> </a>
@@ -40,7 +42,7 @@
 <table class="ui celled striped table">
     <thead>
         <tr>
-            <th colspan="3">Git Repository </th>
+            <th colspan="3">@lastcommit.Author.Name &nbsp;&nbsp;<span class="ui label">@lastcommit.Message</span></th>
         </tr>
     </thead>
     <tbody>
@@ -50,36 +52,16 @@
                 <td class="collapsing"><i class="folder icon"></i><a href="@Url.UnencodedRouteLink("GetTreeView", new { repoName = currRepo, id = currId, path = Model.Parent })">..</a></td>
                 <td>Initial commit</td>
                 <td class="right aligned collapsing">10 hours ago</td>
-            </tr>}
+            </tr>
+        }
         @foreach (FileViewModel fvm in Model.Children)
         {
             bool isTree = fvm.Type == ObjectType.Tree;
-
             <tr>
                 <td class="collapsing"><i class="@((isTree) ? "folder" : "file outline") icon"></i><a href="@Url.UnencodedRouteLink((isTree) ? "GetTreeView" : "GetBlobView", new { repoName = currRepo, id = currId, path = fvm.Path })">@fvm.Name</a></td>
-                <td>Initial commit</td>
-                <td class="right aligned collapsing">10 hours ago</td>
-            </tr>}
+                <td>@lastcommit.MessageShort</td>
+                <td class="right aligned collapsing">@lastcommit.Committer.When</td>
+            </tr>
+        }
     </tbody>
 </table>
-@*<table>
-        <tr><td>&nbsp;</td><th>Name</th></tr>
-
-        @if (Model.Parent != null)
-        {
-            <tr>
-                <td><img src="/img/directory.svg" class="browse-icon" /></td>
-                <td><a href="@Url.UnencodedRouteLink("GetTreeView", new { repoName = currRepo, id = currId, path = Model.Parent })">..</a></td>
-            </tr>
-        }
-
-        @foreach(FileViewModel fvm in Model.Children)
-        {
-            bool isTree = fvm.Type == ObjectType.Tree;
-
-            <tr>
-                <td><img src="/img/@((isTree) ? "directory" : "file").svg" class="browse-icon" /></td>
-                <td><a href="@Url.UnencodedRouteLink((isTree) ? "GetTreeView" : "GetBlobView", new { repoName = currRepo, id = currId, path = fvm.Path })">@fvm.Name</a></td>
-            </tr>
-        }
-    </table>*@

@@ -9,8 +9,8 @@ namespace GitServer.Models
 		private string _path;
 		private string _name;
 
-		protected Repository Repository => _repository;
-		protected GitObject Object => _object;
+		public Repository Repository => _repository;
+        public GitObject Object => _object;
 
 		public string SHA1 => _object.Sha;
 		public ObjectType Type => Repository.ObjectDatabase.RetrieveObjectMetadata(_object.Id).Type;

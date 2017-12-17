@@ -104,3 +104,46 @@ li.dir {
 .user {
     padding-top:15px;
 }
+.user .inline label {
+    width: 100px !important;
+    text-align: right;
+}
+.user.signin form input {
+    width: 60% !important;
+}
+.dashboard {
+    padding-top:10px;
+    padding-bottom:40px;
+    min-height:100%;
+}
+.full.height {
+    padding: 0;
+    margin: 0 0 -80px 0;
+    min-height: 100%;
+}
+footer {
+    margin-top: 54px !important;
+    height: 40px;
+    background-color: white;
+    border-top: 1px solid #d6d6d6;
+    clear: both;
+    width: 100%;
+    color: #888888;
+}
+footer .container {
+    padding-top:10px;
+}
+footer .ui .left {
+    float:left;
+}
+footer .ui .right {
+    float: right;
+}
+.guide .item {
+    padding:1em;
+}
+.markdown pre {
+    padding: 1em;
+    background-color: #f7f7f7;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}

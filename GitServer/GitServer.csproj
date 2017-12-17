@@ -28,6 +28,9 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="wwwroot\js\highlight\highlight.pack.js" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\GitServer.Infrastructure\GitServer.Infrastructure.csproj" />
   </ItemGroup>
   

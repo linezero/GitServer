@@ -60,7 +60,7 @@
             <tr>
                 <td class="collapsing"><i class="@((isTree) ? "folder" : "file outline") icon"></i><a href="@Url.UnencodedRouteLink((isTree) ? "GetTreeView" : "GetBlobView", new { repoName = currRepo, id = currId, path = fvm.Path })">@fvm.Name</a></td>
                 <td>@lastcommit.MessageShort</td>
-                <td class="right aligned collapsing">@lastcommit.Committer.When</td>
+                <td class="right aligned collapsing">@lastcommit.Committer.When.ToString("yyyy-MM-dd HH:mm:ss")</td>
             </tr>
         }
     </tbody>

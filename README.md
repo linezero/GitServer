@@ -1,7 +1,7 @@
 ﻿
 # GitServer
 
-ASP.NET Core 2.0开发Git HTTP Server
+ASP.NET Core 开发Git HTTP Server
 
 设置
 
@@ -14,7 +14,7 @@ ASP.NET Core 2.0开发Git HTTP Server
 
 需要先安装Git,并确保git 命令可以执行
 
-GitPath 可以是 git 的绝对路径
+GitPath 可以是 git 的绝对路径,如在 Windows 下：`C:\\Program Files\\Git\\bin\\git.exe`
 
 ## 功能
 
@@ -37,7 +37,7 @@ GitPath 可以是 git 的绝对路径
 
 `git clone https://github.com/linezero/GitServer.git`
 
-使用VS 2017 15.3+ 或者VS Code。
+使用VS 2019 或者VS Code。
 
 
 ## 原理
